@@ -20,8 +20,6 @@ public class Arm extends Subsystem {
 		armMotor = new CANTalon(5);
 		armMotor.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		
-		
-		
 	}
 
     public void initDefaultCommand() {

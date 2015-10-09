@@ -52,7 +52,7 @@ public class ResistRotation extends PIDCommand {
 	@Override
 	protected double returnPIDInput() {
 		
-		return Robot.drivetrain.getXRotation() + 29;
+		return Robot.drivetrain.getZRotation() - 20;
 	}
 
 	@Override

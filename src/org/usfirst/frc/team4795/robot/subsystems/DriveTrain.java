@@ -67,7 +67,12 @@ public class DriveTrain extends Subsystem {
     public double getXRotation(){
     	return m_gyro.getRotationX();
     }
-    
+    public double getYRotation() {
+    	return m_gyro.getRotationY();
+    }
+    public double getZRotation() {
+    	return m_gyro.getRotationZ();
+    }
     /*
      * get the range value from the range finder
      * 
@@ -80,7 +85,9 @@ public class DriveTrain extends Subsystem {
     public void log(){
     	SmartDashboard.putNumber("Range Finder", getRange());
     	
-    	SmartDashboard.putNumber("X rot", getXRotation());
+    	SmartDashboard.putNumber("X rot" ,getXRotation());
+    	SmartDashboard.putNumber("Y rot" ,getYRotation());
+    	SmartDashboard.putNumber("Z rot" ,getZRotation());
     }
     
 }

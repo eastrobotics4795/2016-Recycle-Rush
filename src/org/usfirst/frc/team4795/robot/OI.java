@@ -33,7 +33,7 @@ public class OI {
     private Button elevatorUp = new JoystickButton(leftJoy, 6);
     private Button elevatorDown = new JoystickButton(leftJoy, 4);
     
-    private Button armIn = new JoystickButton(rightJoy, 5);
+    private Button armIn = new JoystickButton(rightJoy, 4);
     private Button armOut = new JoystickButton(rightJoy, 6);
     
     private Button leftTrigger = new JoystickButton(leftJoy, 1);
@@ -44,19 +44,20 @@ public class OI {
     	elevatorUp.whileHeld(new MoveElevator(0.5));
     	elevatorDown.whileHeld(new MoveElevator(-0.5));
     	
-    	/*
+    	
     	armIn.whileHeld(new SpinArm(0.5));
     	armOut.whileHeld(new SpinArm(-0.5));
+    	
+    	/*
+    	//make arms move to fixed places
+    	armIn.whenPressed(new HomeArm());
+    	armOut.whenPressed(new ArmSetpoint(-570));
     	*/
     	
-    	//make arms move to fixed places
-    	armIn.whileHeld(new HomeArm());
-    	armOut.whileHeld(new ArmSetpoint(-570));
-    	
-    	
     	//TODO
+    	
     	leftTrigger.whileHeld(new TransverseDrive());
-    	leftTrigger.whileHeld(new ResistRotation());
+        leftTrigger.whileHeld(new ResistRotation());
     	
     }
 
