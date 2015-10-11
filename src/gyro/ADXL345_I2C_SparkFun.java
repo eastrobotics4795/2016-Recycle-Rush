@@ -7,6 +7,8 @@ package gyro;
 /*----------------------------------------------------------------------------*/
 
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tResourceType;
 import edu.wpi.first.wpilibj.communication.UsageReporting;
@@ -14,11 +16,6 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.SensorBase;
-import edu.wpi.first.wpilibj.I2C;
 
 /**
  *

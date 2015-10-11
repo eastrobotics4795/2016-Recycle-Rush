@@ -1,9 +1,6 @@
 package org.usfirst.frc.team4795.robot;
 
-import org.usfirst.frc.team4795.robot.commands.ArmSetpoint;
-import org.usfirst.frc.team4795.robot.commands.HomeArm;
 import org.usfirst.frc.team4795.robot.commands.MoveElevator;
-import org.usfirst.frc.team4795.robot.commands.RangeAlign;
 import org.usfirst.frc.team4795.robot.commands.ResistRotation;
 import org.usfirst.frc.team4795.robot.commands.SpinArm;
 import org.usfirst.frc.team4795.robot.commands.TransverseDrive;

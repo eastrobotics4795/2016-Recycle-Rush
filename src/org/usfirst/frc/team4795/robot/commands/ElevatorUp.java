@@ -3,7 +3,6 @@ package org.usfirst.frc.team4795.robot.commands;
 import org.usfirst.frc.team4795.robot.Robot;
 
 import edu.wpi.first.wpilibj.can.CANMessageNotAllowedException;
-import edu.wpi.first.wpilibj.can.CANMessageNotFoundException;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
