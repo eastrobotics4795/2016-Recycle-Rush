@@ -6,79 +6,55 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Attempt to use PID control to drive up to a tote
+ * Command that uses the range finder and PID control to move to a specific distance from a surface.
  */
 public class RangeAlign extends PIDCommand {
 
-	double target;
-	
-    public RangeAlign(double distance) {
-    	super(-0.02, 0, 0);
-    	
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.drivetrain);
-    	target = distance;
+  private final double targetOffset;
+  
+  /**
+   * Uses distance as the target offset between the range finder and a surface.
+   * @param targetOffset the desired offset
+   */
+  public RangeAlign(double targetOffset) {
+    // XXX random PID values?
+    super(-0.02, 0, 0);
+
+    requires(Robot.drivetrain);
+    this.targetOffset = targetOffset;
+  }
+
+  protected void initialize() {}
+
+  protected void execute() {
+    Robot.drivetrain.log();
+  }
+
+  protected boolean isFinished() {
+    return false;
+  }
+
+  protected void end() {
+    Robot.drivetrain.drive(0, 0);
+  }
+
+  protected void interrupted() {
+    end();
+  }
+
+  protected double returnPIDInput() {
+    return targetOffset - Robot.drivetrain.getRange();
+  }
+
+  protected void usePIDOutput(double output) {
+    // TODO eliminate calls to signum and multiplication
+    if (Math.abs(output) > 0.3) {
+      Robot.drivetrain.drive(Math.signum(output) * 0.3, Math.signum(output) * 0.3);
+      SmartDashboard.putNumber("speed", Math.signum(output) * 0.3);
+    } else {
+      Robot.drivetrain.drive(output, output);
+      SmartDashboard.putNumber("speed", output);
     }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	
-    	
-    	
-    	
-    	
-    	Robot.drivetrain.log();
-    	
-    	
-    	
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.drivetrain.drive(0, 0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
-    
-    
-
-	@Override
-	protected double returnPIDInput() {
-		// TODO Auto-generated method stub
-		return target - Robot.drivetrain.getRange();
-	}
-
-	@Override
-	protected void usePIDOutput(double output) {
-		
-		
-		if(Math.abs(output) > 0.3){
-			Robot.drivetrain.drive(Math.signum(output) * 0.3, Math.signum(output) * 0.3);
-			
-			SmartDashboard.putNumber("speed", Math.signum(output) * 0.3);
-		}
-		else{
-			Robot.drivetrain.drive(output, output);
-			SmartDashboard.putNumber("speed", output);
-		}
-		
-    	
-		
-    	
-	}
+  }
+  
 }

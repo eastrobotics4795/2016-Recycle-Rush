@@ -6,43 +6,35 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Command that sets the position of the elevator to a value on the SmartDashboard.
  */
 public class ManualElevator extends Command {
 
-    public ManualElevator() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.elevator);
-    }
-    
-    
+  /**
+   * Prepares a new command for execution.
+   */
+  public ManualElevator() {
+    requires(Robot.elevator);
+  }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    }
+  protected void initialize() {
+    // TODO need a startPositionMode here?
+  }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.elevator.setPosition(SmartDashboard.getNumber("encoderSet", 0));
-    	Robot.elevator.log();
-    	
-    }
+  protected void execute() {
+    // this truly sets the position, due to being in position mode; see documentation
+    Robot.elevator.setSpeed(SmartDashboard.getNumber("encoderSet", 0));
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+    // update the SmartDashboard data concerning the elevator
+    Robot.elevator.log();
+  }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	
-    }
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+  protected void end() {}
+
+  protected void interrupted() {}
+  
 }

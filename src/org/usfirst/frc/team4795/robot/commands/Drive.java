@@ -5,44 +5,40 @@ import org.usfirst.frc.team4795.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Command that sets the speed of the drive train to specified values while active.
  */
 public class Drive extends Command {
 
-	double left;
-	double right;
-	
-    public Drive(double l, double r) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.drivetrain);
-    	left = l;
-    	right = r;
-    }
+  private final double left;
+  private final double right;
+  
+  /**
+   * Uses left and right as speeds for the respective sides of the drive train.
+   * @param left speed of the left side, in the range -1 to 1
+   * @param right speed of the right side, in the range -1 to 1
+   */
+  public Drive(double left, double right) {
+    requires(Robot.drivetrain);
+    this.left = left;
+    this.right = right;
+  }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    }
+  protected void initialize() {}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.drivetrain.drive(left, right);
-    }
+  protected void execute() {
+    Robot.drivetrain.drive(left, right);
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.drivetrain.drive(0, 0);
-    }
+  protected void end() {
+    Robot.drivetrain.drive(0.0, 0.0);
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+  protected void interrupted() {
+    end();
+  }
+  
 }

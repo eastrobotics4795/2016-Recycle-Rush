@@ -13,81 +13,92 @@ import gyro.ADXL345_I2C_SparkFun;
 import gyro.GyroITG3200;
 
 /**
- *
+ * Subsystem that exposes an interface for the drive train.
  */
 public class DriveTrain extends Subsystem {
-    
-	private CANJaguar leftMotor, rightMotor; 
-	private AnalogInput rangeFinder;
-	
-	
-	private ADXL345_I2C_SparkFun m_accel;
-	private GyroITG3200 m_gyro;
-	
-	public DriveTrain(){
-		super();
-		
-		leftMotor = new CANJaguar(RobotMap.leftMotor);
-		rightMotor = new CANJaguar(RobotMap.rightMotor);
-		
-		rangeFinder = new AnalogInput(0);
-		
-		m_accel = new gyro.ADXL345_I2C_SparkFun(I2C.Port.kOnboard, Accelerometer.Range.k16G);
-	    m_gyro = new gyro.GyroITG3200(I2C.Port.kOnboard);
-	    m_gyro.initialize();
-		
-		
-	}
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new TankDrive());
-    }
+  private final CANJaguar leftMotor;
+  private final CANJaguar rightMotor;
+  private final AnalogInput rangeFinder;
+
+  private final GyroITG3200 gyroscope;
+
+  /**
+   * Initializes the motor controllers for the drive train, the range finder, and the gyroscope.
+   * TODO make this class a singleton
+   */
+  public DriveTrain() {
+    leftMotor = new CANJaguar(RobotMap.LEFT_MOTOR.value);
+    rightMotor = new CANJaguar(RobotMap.RIGHT_MOTOR.value);
+
+    rangeFinder = new AnalogInput(RobotMap.RANGE_FINDER.value);
+
+    gyroscope = new gyro.GyroITG3200(I2C.Port.kOnboard);
+    gyroscope.initialize();
+  }
+
+  public void initDefaultCommand() {
+    setDefaultCommand(new TankDrive());
+  }
+
+  /**
+   * Sets the left and right speeds of the drive train.
+   * @param left left side speed in the range [-1,1]
+   * @param right right side speed in the range [-1,1]
+   */
+  public void drive(double left, double right) {
+    // TODO constrain left and right
     
-    
-    
-    /**
-	 * Tank style driving for the DriveTrain. 
-	 * @param left Speed in range [-1,1]
-	 * @param right Speed in range [-1,1]
-	 */
-    public void drive(double left, double right){
-    	leftMotor.set(-left);
-		rightMotor.set(right);
-    }
-    
-    /**
-     * get x rotation from gyro
-     * @return
-     */
-    public double getXRotation(){
-    	return m_gyro.getRotationX();
-    }
-    public double getYRotation() {
-    	return m_gyro.getRotationY();
-    }
-    public double getZRotation() {
-    	return m_gyro.getRotationZ();
-    }
-    /*
-     * get the range value from the range finder
-     * 
-     * @return the value in inches 
-     */
-    public double getRange(){
-    	return (rangeFinder.pidGet() * 100 * (5.0/4.88)) / 2.54;
-    }
-    
-    public void log(){
-    	SmartDashboard.putNumber("Range Finder", getRange());
-    	
-    	SmartDashboard.putNumber("X rot" ,getXRotation());
-    	SmartDashboard.putNumber("Y rot" ,getYRotation());
-    	SmartDashboard.putNumber("Z rot" ,getZRotation());
-    }
-    
+    // TODO need calls to setPercentMode? 
+    leftMotor.set(-left);
+    rightMotor.set(right);
+  }
+
+  /**
+   * Read the x rotation of the gyroscope.
+   * @return the x rotation in the gyro's LSB format
+   * @see GyroITG3200#getRotationX()
+   */
+  public double getXRotation() {
+    return gyroscope.getRotationX();
+  }
+
+  /**
+   * Read the y rotation of the gyroscope.
+   * @return the y rotation in the gyro's LSB format
+   * @see GyroITG3200#getRotationY()
+   */
+  public double getYRotation() {
+    return gyroscope.getRotationY();
+  }
+
+  /**
+   * Read the z rotation of the gyroscope.
+   * @return the z rotation in the gyro's LSB format
+   * @see GyroITG3200#getRotationZ()
+   */
+  public double getZRotation() {
+    return gyroscope.getRotationZ();
+  }
+
+  /**
+   * Read the distance to a surface in front of the robot, as determined by the range finder.
+   * @return the range in inches
+   */
+  public double getRange() {
+    // XXX make a more readable conversion factor
+    return (rangeFinder.pidGet() * 100 * (5.0 / 4.88)) / 2.54;
+  }
+  
+  /**
+   * Writes relevant data about the drive train to the SmartDashboard.
+   */
+  public void log() {
+    SmartDashboard.putNumber("Range Finder", getRange());
+
+    SmartDashboard.putNumber("X rot", getXRotation());
+    SmartDashboard.putNumber("Y rot", getYRotation());
+    SmartDashboard.putNumber("Z rot", getZRotation());
+  }
+
 }
-

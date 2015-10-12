@@ -5,60 +5,51 @@ import org.usfirst.frc.team4795.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Sets the arm to a predefined position 
+ * Command that moves the arm to a specific position.
  */
 public class ArmSetpoint extends Command {
 
-	double setPoint;
-	
-	boolean isFinished = false;
-    public ArmSetpoint(double setPoint) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.arm);
-    	this.setPoint = setPoint;
-    	
-    }
+  private final double setPoint;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    }
+  boolean isFinished = false;
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	
-    	double pos = Robot.arm.getPosition();
-    	//TODO move the other way if the encoder value requires
-    	
-    	//if we are within tolerance then exit
-    	if(Math.abs(pos - setPoint) < 20){
-    		isFinished = true;
-    	}
-    	else if(pos > setPoint){
-    		Robot.arm.setSpeed(0.5);
-    	}
-    	else if(pos < setPoint){
-    		Robot.arm.setSpeed(-0.5);
-    	}
-    	
-    	
-    	Robot.arm.log();
-    }
+  /**
+   * Uses setPoint as a reference point to move the arm.
+   * TODO find the upper bound of this value
+   * @param setPoint a reference value where zero is fully open
+   */
+  public ArmSetpoint(double setPoint) {
+    requires(Robot.arm);
+    this.setPoint = setPoint;
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return isFinished;
-    }
+  protected void initialize() {}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.arm.setSpeed(0);
+  protected void execute() {
+    double pos = Robot.arm.getPosition();
+    // finish executing when the arm is within tolerance
+    if (Math.abs(pos - setPoint) < 20) {
+      isFinished = true;
+    } else if (pos > setPoint) {
+      Robot.arm.setSpeed(0.5);
+    } else if (pos < setPoint) {
+      Robot.arm.setSpeed(-0.5);
     }
+    
+    // update the SmartDashboard data concerning the arm 
+    Robot.arm.log();
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+  protected boolean isFinished() {
+    return isFinished;
+  }
+
+  protected void end() {
+    Robot.arm.setSpeed(0);
+  }
+
+  protected void interrupted() {
+    end();
+  }
+  
 }

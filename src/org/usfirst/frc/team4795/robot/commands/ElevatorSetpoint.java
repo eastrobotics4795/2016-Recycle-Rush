@@ -5,53 +5,46 @@ import org.usfirst.frc.team4795.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Use PID position control to move the elevator to a certain position
+ * Command that moves the elevator to a specific position while active.
  */
 public class ElevatorSetpoint extends Command {
 
-	
-	
-	
-	double setPoint;
-    public ElevatorSetpoint(double setPoint) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.elevator);
-    	this.setPoint = setPoint;
-    	
-    	
-    	//TODO remove this and exit when finished
-    	
-    }
+  private final double offset;
+  private double initPos;
 
-    double initPos;
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.elevator.startPositionMode(-50, 0, 0);
-    	initPos = Robot.elevator.getPosistion();
-    }
+  /**
+   * Uses offset as an offset to move the elevator from its current position.
+   * TODO find the units of this value
+   * @param offset an offset where zero is the current position
+   */
+  public ElevatorSetpoint(double offset) {
+    requires(Robot.elevator);
+    this.offset = offset;
+  }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.elevator.setPosition(setPoint + initPos);
-    	
-    	
-    	Robot.elevator.log();
-    }
+  protected void initialize() {
+    // begin holding the arm in place using the encoder
+    // XXX random PID values?
+    Robot.elevator.startPositionMode(-50, 0, 0);
+    
+    initPos = Robot.elevator.getPosition();
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+  protected void execute() {
+    // TODO constrain this value
+    // this truly sets the position due to being in position mode; see documentation
+    Robot.elevator.setSpeed(initPos + offset);
+    
+    // update the SmartDashboard data concerning the elevator
+    Robot.elevator.log();
+  }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	
-    }
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	
-    }
+  protected void end() {}
+
+  protected void interrupted() {}
+  
 }

@@ -6,44 +6,38 @@ import edu.wpi.first.wpilibj.can.CANMessageNotAllowedException;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Moves the elevator down at fixed rate
+ * Command that moves the elevator down at a fixed rate while active.
  */
 public class ElevatorDown extends Command {
+  
+  /**
+   * Prepares a new command for execution.
+   */
+  public ElevatorDown() {
+    requires(Robot.elevator);
+  }
 
-    public ElevatorDown() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.elevator);
+  protected void initialize() {
+    Robot.elevator.startPercentMode();
+  }
+
+  protected void execute() {
+    try {
+      Robot.elevator.setSpeed(0.5);
+    } catch (CANMessageNotAllowedException e) {
+      e.printStackTrace();
     }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.elevator.startPercentMode();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	try{
-    		Robot.elevator.setSpeed(0.5);
-    	}
-    	catch(CANMessageNotAllowedException e){
-    		
-    	}
     
-    	Robot.elevator.log();
-    }
+    // update the SmartDashboard data concerning the elevator
+    Robot.elevator.log();
+  }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+  protected void end() {}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+  protected void interrupted() {}
+  
 }

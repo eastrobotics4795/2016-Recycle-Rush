@@ -6,46 +6,44 @@ import edu.wpi.first.wpilibj.can.CANMessageNotAllowedException;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Move the elevator at a given speed
+ * Command that moves the elevator at a specific rate while active.
  */
 public class MoveElevator extends Command {
 
-	double speed;
-    public MoveElevator(double speed) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.elevator);
-    	this.speed = speed;
-    }
+  private final double speed;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.elevator.startPercentMode();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	try{
-    		Robot.elevator.setSpeed(speed);
-    	}
-    	catch(CANMessageNotAllowedException e){
-    		e.printStackTrace();
-    	}
+  /**
+   * Uses speed as the speed to move the elevator at.
+   * @param speed a speed in the range -1 to 1
+   */
+  public MoveElevator(double speed) {
+    // TODO constrain speed
     
-    	Robot.elevator.log();
+    requires(Robot.elevator);
+    this.speed = speed;
+  }
+
+  protected void initialize() {
+    Robot.elevator.startPercentMode();
+  }
+
+  protected void execute() {
+    try {
+      Robot.elevator.setSpeed(speed);
+    } catch (CANMessageNotAllowedException e) {
+      e.printStackTrace();
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+    // update the SmartDashboard data concerning the elevator
+    Robot.elevator.log();
+  }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+  protected boolean isFinished() {
+    return false;
+  }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+  protected void end() {}
+
+  protected void interrupted() {}
+  
 }
